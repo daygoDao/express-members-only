@@ -8,7 +8,14 @@
 <body>
     <div>
         <ul>
-            <li><a href="/r">Home</a></li>
+            <li><a href="/">Home</a></li>
+            <% if(user) { %>
+                <li><a href="#"><%= user.username %></a></li>
+              <% } else { %>
+                <li><a href="/r/sign-up">sign up</a></li>
+                <li><a href="/r/log-in">log in</a></li>
+          
+              <% } %>
         </ul>
     </div>
 </body>

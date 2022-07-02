@@ -8,7 +8,7 @@
     <%- include("navbar") %>  
     <h1><%= title %></h1>
     <% if(user) { %>
-      <p>signed in</p>
+      <p>signed in. Welcome back, <%= user.username %></p>
     <% } else { %>
       <p>NOT signed in</p>
     <% } %>
