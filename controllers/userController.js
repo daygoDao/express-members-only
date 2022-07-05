@@ -3,7 +3,9 @@ const { body, validationResult, check } = require("express-validator");
 
 exports.sign_up_get = function (req, res, next) {
   console.log("sign_up, witin userController: " + req.body);
-  res.render("sign-up-form");
+  res.render("sign-up-form", {
+    errors: undefined,
+  });
 };
 
 exports.sign_up_post = [
