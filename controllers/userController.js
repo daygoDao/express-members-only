@@ -5,6 +5,7 @@ exports.sign_up_get = function (req, res, next) {
   console.log("sign_up, witin userController: " + req.body);
   res.render("sign-up-form", {
     errors: undefined,
+    user: undefined,
   });
 };
 
@@ -47,24 +48,26 @@ exports.sign_up_post = [
     //extract the validation errors from a request
     const errors = validationResult(req);
 
+    // create user obj w/ escaped and trimmed data
+    const user = new User({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      username: req.body.username,
+      password: req.body.password,
+      membership_status: 'bot',
+    });
+
     if(!errors.isEmpty()) {
       console.log('contains errors', errors.array())
       //there are errors, render form again w/ sanitized values/errors messages
+      console.log(user)
       res.render("sign-up-form", {
         errors: errors.array(),
+        user: user,
       })
       return;
     } else {
       // data from form is valid
-      // create user obj w/ escaped and trimmed data
-      console.log(req.body)
-      const user = new User({
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        username: req.body.username,
-        password: req.body.password,
-        membership_status: 'bot',
-      });
       user.save(function (err) {
         if(err) {
           return next(err);
