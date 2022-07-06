@@ -29,7 +29,11 @@
     </form>
 
     <% if(errors) { %>
-        <% console.log(errors) %>
+        <ul>
+            <% for(let err of errors) { %>
+                <li><%= err.msg %></li>                
+            <% } %>
+        </ul>
     <% } %>
 </body>
 </html>

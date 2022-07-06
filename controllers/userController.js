@@ -35,6 +35,7 @@ exports.sign_up_post = [
   body("password")
     .trim()
     .isLength({ min: 8 })
+    .withMessage("must atleast be 8 character length")
     .escape()
     .isStrongPassword()
     .withMessage("atleast: min-length = 8, minLowerCase = 1, minUpperCase = 1, minNumbers = 1, minSymbols = 1"),
