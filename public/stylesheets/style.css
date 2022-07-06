@@ -4,5 +4,25 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+button#toggle-password {
+  background: red;
+  border: black;
+  cursor: pointer;
+  /* Media query  isnt shown here */
+  font-size: var(--mobile-font-size);
+  font-weight: 300;
+  padding: 0;
+  /* display at the top right of the container */
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.sign-up {
+  display: flex;
+  flex-flow: column;
+  flex-direction: column;
 }
