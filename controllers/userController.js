@@ -1,6 +1,10 @@
 const User = require("../models/user");
 const { body, validationResult, check } = require("express-validator");
 
+exports.log_in_get = function (req, res, next) {
+  res.render("log-in-form")
+}
+
 exports.sign_up_get = function (req, res, next) {
   console.log("sign_up, witin userController: " + req.body);
   res.render("sign-up-form", {
@@ -78,3 +82,4 @@ exports.sign_up_post = [
     }
   },
 ];
+
