@@ -1,9 +1,17 @@
 const User = require("../models/user");
+const passport = require("passport");
 const { body, validationResult, check } = require("express-validator");
 
 exports.log_in_get = function (req, res, next) {
-  res.render("log-in-form")
-}
+  res.render("log-in-form");
+};
+
+exports.log_in_post = function (req, res, next) {
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/",
+  });
+};
 
 exports.sign_up_get = function (req, res, next) {
   console.log("sign_up, witin userController: " + req.body);
@@ -43,10 +51,15 @@ exports.sign_up_post = [
     .withMessage("must atleast be 8 character length")
     .escape()
     .isStrongPassword()
-    .withMessage("atleast: min-length = 8, minLowerCase = 1, minUpperCase = 1, minNumbers = 1, minSymbols = 1"),
-  check("passwordConfirmation", 'passwordConfirmation field must habe the same value as the password field')
+    .withMessage(
+      "atleast: min-length = 8, minLowerCase = 1, minUpperCase = 1, minNumbers = 1, minSymbols = 1"
+    ),
+  check(
+    "passwordConfirmation",
+    "passwordConfirmation field must habe the same value as the password field"
+  )
     .exists()
-    .custom((value, { req }) => value === req.body.password),  
+    .custom((value, { req }) => value === req.body.password),
   // process request after validated and sanitized
   (req, res, next) => {
     //extract the validation errors from a request
@@ -58,28 +71,27 @@ exports.sign_up_post = [
       last_name: req.body.last_name,
       username: req.body.username,
       password: req.body.password,
-      membership_status: 'bot',
+      membership_status: "bot",
     });
 
-    if(!errors.isEmpty()) {
-      console.log('contains errors', errors.array())
+    if (!errors.isEmpty()) {
+      console.log("contains errors", errors.array());
       //there are errors, render form again w/ sanitized values/errors messages
-      console.log(user)
+      console.log(user);
       res.render("sign-up-form", {
         errors: errors.array(),
         user: user,
-      })
+      });
       return;
     } else {
       // data from form is valid
       user.save(function (err) {
-        if(err) {
+        if (err) {
           return next(err);
         }
         // success - redirect to new user account settings
-        res.redirect('/')
+        res.redirect("/");
       });
     }
   },
 ];
-

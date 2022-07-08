@@ -14,5 +14,6 @@ router.post("/sign-up", user_controller.sign_up_post)
 
 // LOG IN //
 router.get("/log-in", user_controller.log_in_get)
+router.post("/log-in", user_controller.log_in_post)
 
 module.exports = router;
