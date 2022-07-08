@@ -13,6 +13,8 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const mbRouter = require("./routes/catagory");
 
+const User = require("./models/user");
+
 const app = express();
 
 const mongoDb = process.env.MONGODB_URL;
@@ -29,6 +31,34 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// authenticate user within db
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username }, (err, user) => {
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false, { message: "incorrect username" })
+      }
+      if (user.password !== password) {
+        return done(null, false, { message: 'incorrect password' })
+      }
+      return done(null, user)
+    })
+  })
+)
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+})
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  })
+})
 
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
